@@ -1,572 +1,575 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vérification Véhicules Pompiers</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="manifest" href="/manifest.webmanifest">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vérification Véhicules Pompiers</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body class="bg-gray-100 font-sans antialiased">
-    <!-- En-tête PWA -->
-    <header class="bg-red-600 text-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fas fa-fire-alt text-2xl"></i>
-                <h1 class="text-xl font-bold">Vérif Véhicules</h1>
-            </div>
-            <div class="flex items-center space-x-4">
-                <button id="darkModeToggle" class="p-2 rounded-full hover:bg-red-700">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <button id="userMenu" class="p-2 rounded-full hover:bg-red-700">
-                    <i class="fas fa-user"></i>
-                </button>
-            </div>
-        </div>
-    </header>
+  <!-- En-tête PWA -->
+  <header class="bg-red-600 text-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <i class="fas fa-fire-alt text-2xl"></i>
+        <h1 class="text-xl font-bold">Vérif Véhicules</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button id="darkModeToggle" class="p-2 rounded-full hover:bg-red-700">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button id="userMenu" class="p-2 rounded-full hover:bg-red-700">
+          <i class="fas fa-user"></i>
+        </button>
+      </div>
+    </div>
+  </header>
 
-    <!-- Menu utilisateur -->
-    <div id="userDropdown" class="hidden absolute right-4 top-16 bg-white shadow-lg rounded-lg py-2 w-48 z-50">
-        <div class="px-4 py-2 border-b">
-            <p class="font-semibold" id="currentUser">Non connecté</p>
+  <!-- Menu utilisateur -->
+  <div id="userDropdown" class="hidden absolute right-4 top-16 bg-white shadow-lg rounded-lg py-2 w-48 z-50">
+    <div class="px-4 py-2 border-b">
+      <p class="font-semibold" id="currentUser">Non connecté</p>
+    </div>
+    <a href="#" class="block px-4 py-2 hover:bg-gray-100" id="logoutBtn">Déconnexion</a>
+  </div>
+
+  <!-- Contenu principal -->
+  <main class="container mx-auto px-4 py-6">
+    <!-- Page de sélection du véhicule -->
+    <div id="vehicleSelectionPage" class="page-transition">
+      <div class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">Sélectionnez un véhicule</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="card bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg transition vehicle-card" data-vehicle-id="VSAV-1" data-vehicle-name="Ambulance 1">
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="font-bold text-lg">VSAV-1</h3>
+              <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Disponible</span>
+            </div>
+            <p class="text-gray-600">Ambulance 1</p>
+            <div class="mt-4">
+              <div class="flex justify-between text-sm text-gray-500">
+                <span>Dernière vérif:</span>
+                <span id="lastCheckVSAV1">Aujourd'hui, 08:15</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg transition vehicle-card" data-vehicle-id="FPT-1" data-vehicle-name="Fourgon Pompe Tonne">
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="font-bold text-lg">FPT-1</h3>
+              <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded">En intervention</span>
+            </div>
+            <p class="text-gray-600">Fourgon Pompe Tonne</p>
+            <div class="mt-4">
+              <div class="flex justify-between text-sm text-gray-500">
+                <span>Dernière vérif:</span>
+                <span id="lastCheckFPT1">Hier, 17:30</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg transition vehicle-card" data-vehicle-id="EPA-1" data-vehicle-name="Échelle Pivotante">
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="font-bold text-lg">EPA-1</h3>
+              <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">Maintenance</span>
+            </div>
+            <p class="text-gray-600">Échelle Pivotante</p>
+            <div class="mt-4">
+              <div class="flex justify-between text-sm text-gray-500">
+                <span>Dernière vérif:</span>
+                <span id="lastCheckEPA1">21/04/2023</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <a href="#" class="block px-4 py-2 hover:bg-gray-100" id="logoutBtn">Déconnexion</a>
+      </div>
+      
+      <div class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">Statut des véhicules</h2>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="flex items-center">
+              <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+              <span class="text-sm">Disponible</span>
+              <span class="ml-auto font-bold">2</span>
+            </div>
+            <div class="flex items-center">
+              <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+              <span class="text-sm">En intervention</span>
+              <span class="ml-auto font-bold">1</span>
+            </div>
+            <div class="flex items-center">
+              <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+              <span class="text-sm">Maintenance</span>
+              <span class="ml-auto font-bold">1</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Contenu principal -->
-    <main class="container mx-auto px-4 py-6">
-        <!-- Page de sélection du véhicule -->
-        <div id="vehicleSelectionPage" class="page-transition">
-            <div class="mb-8">
-                <h2 class="text-2xl font-bold mb-4">Sélectionnez un véhicule</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="card bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg transition vehicle-card" data-vehicle-id="VSAV-1" data-vehicle-name="Ambulance 1">
-                        <div class="flex justify-between items-center mb-2">
-                            <h3 class="font-bold text-lg">VSAV-1</h3>
-                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Disponible</span>
-                        </div>
-                        <p class="text-gray-600">Ambulance 1</p>
-                        <div class="mt-4">
-                            <div class="flex justify-between text-sm text-gray-500">
-                                <span>Dernière vérif:</span>
-                                <span id="lastCheckVSAV1">Aujourd'hui, 08:15</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg transition vehicle-card" data-vehicle-id="FPT-1" data-vehicle-name="Fourgon Pompe Tonne">
-                        <div class="flex justify-between items-center mb-2">
-                            <h3 class="font-bold text-lg">FPT-1</h3>
-                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded">En intervention</span>
-                        </div>
-                        <p class="text-gray-600">Fourgon Pompe Tonne</p>
-                        <div class="mt-4">
-                            <div class="flex justify-between text-sm text-gray-500">
-                                <span>Dernière vérif:</span>
-                                <span id="lastCheckFPT1">Hier, 17:30</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg transition vehicle-card" data-vehicle-id="EPA-1" data-vehicle-name="Échelle Pivotante">
-                        <div class="flex justify-between items-center mb-2">
-                            <h3 class="font-bold text-lg">EPA-1</h3>
-                            <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">Maintenance</span>
-                        </div>
-                        <p class="text-gray-600">Échelle Pivotante</p>
-                        <div class="mt-4">
-                            <div class="flex justify-between text-sm text-gray-500">
-                                <span>Dernière vérif:</span>
-                                <span id="lastCheckEPA1">21/04/2023</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mb-8">
-                <h2 class="text-2xl font-bold mb-4">Statut des véhicules</h2>
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
-                            <span class="text-sm">Disponible</span>
-                            <span class="ml-auto font-bold">2</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
-                            <span class="text-sm">En intervention</span>
-                            <span class="ml-auto font-bold">1</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
-                            <span class="text-sm">Maintenance</span>
-                            <span class="ml-auto font-bold">1</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Page de vérification du matériel -->
+    <div id="inventoryPage" class="page-transition hidden">
+      <!-- Conteneur de barre de progression fixe -->
+      <div id="progressContainer" class="fixed-progress-container">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="font-semibold">Progression de la vérification</h3>
+          <span id="progressPercentage">0%</span>
         </div>
-
-        <!-- Page de vérification du matériel -->
-        <div id="inventoryPage" class="page-transition hidden">
-            <div class="flex justify-between items-center mb-6">
-                <button id="backToSelectionBtn1" class="flex items-center text-red-600 hover:text-red-800">
-                    <i class="fas fa-arrow-left mr-2"></i> Retour
-                </button>
-                <h2 id="vehicleTitle" class="text-2xl font-bold">Vérification du matériel</h2>
-                <div></div> <!-- Pour l'alignement -->
-            </div>
-            
-            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                <div class="flex justify-between items-center mb-2">
-                    <h3 class="font-semibold">Progression de la vérification</h3>
-                    <span id="progressPercentage">0%</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-2.5">
-                    <div id="progressBar" class="progress-bar bg-red-600 rounded-full" style="width: 0%"></div>
-                </div>
-            </div>
-            
-            <div class="mb-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-semibold">Matériel à vérifier</h3>
-                    <div class="flex space-x-2">
-                        <div class="relative">
-                            <select id="filterSelect" class="custom-select bg-gray-100 border border-gray-300 text-gray-700 py-1 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-red-500">
-                                <option value="all">Tous</option>
-                                <option value="checked">Vérifié</option>
-                                <option value="unchecked">Non vérifié</option>
-                            </select>
-                        </div>
-                        <div class="relative">
-                            <select id="locationFilterSelect" class="custom-select bg-gray-100 border border-gray-300 text-gray-700 py-1 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-red-500">
-                                <option value="all">Tous les emplacements</option>
-                                <!-- Options d'emplacement ajoutées dynamiquement par JS -->
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="equipmentList" class="space-y-3">
-                    <!-- Les éléments seront ajoutés dynamiquement -->
-                </div>
-            </div>
-            
-            <div id="notesSection" class="bg-white rounded-lg shadow-md p-6 mb-6">
-                <h3 class="font-semibold mb-3">Notes & Observations</h3>
-                <textarea id="inspectionNotes" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" rows="3" placeholder="Ajoutez des observations sur l'état du véhicule..."></textarea>
-            </div>
-            
-            <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                <button id="saveBtn" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-save mr-2"></i> Sauvegarder
-                </button>
-                <button id="completeBtn" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-check-circle mr-2"></i> Terminer la vérification
-                </button>
-            </div>
-            
-            <div id="exportSection" class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4 hidden">
-                <div class="flex justify-between items-center">
-                    <p class="text-blue-800">Vérification terminée avec succès!</p>
-                    <button id="exportReportBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-1 px-3 rounded-lg text-sm flex items-center">
-                        <i class="fas fa-file-export mr-2"></i> Exporter
-                    </button>
-                </div>
-            </div>
+        <div class="w-full bg-gray-200 rounded-full h-2.5">
+          <div id="progressBar" class="progress-bar bg-red-600 rounded-full" style="width: 0%"></div>
         </div>
-
-        <!-- Page d'administration -->
-        <div id="adminPage" class="page-transition hidden">
-            <div class="flex justify-between items-center mb-6">
-                <button id="backToSelectionBtn2" class="flex items-center text-red-600 hover:text-red-800">
-                    <i class="fas fa-arrow-left mr-2"></i> Retour
-                </button>
-                <h2 class="text-2xl font-bold">Administration</h2>
-                <div></div> <!-- Pour l'alignement -->
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <h3 class="font-semibold text-lg mb-4 flex items-center">
-                        <i class="fas fa-truck mr-2 text-red-600"></i> Gestion des véhicules
-                    </h3>
-                    <p class="text-gray-600 mb-4">Ajoutez, modifiez ou supprimez des véhicules.</p>
-                    <button id="manageVehiclesBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg">
-                        Gérer les véhicules
-                    </button>
-                </div>
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <h3 class="font-semibold text-lg mb-4 flex items-center">
-                        <i class="fas fa-tools mr-2 text-red-600"></i> Gestion du matériel
-                    </h3>
-                    <p class="text-gray-600 mb-4">Ajoutez, modifiez ou supprimez du matériel pour chaque type de véhicule.</p>
-                    <button id="manageEquipmentBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg">
-                        Gérer le matériel
-                    </button>
-                </div>
-                
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <h3 class="font-semibold text-lg mb-4 flex items-center">
-                        <i class="fas fa-users-cog mr-2 text-red-600"></i> Gestion des utilisateurs
-                    </h3>
-                    <p class="text-gray-600 mb-4">Ajoutez ou supprimez des utilisateurs et définissez leurs droits d'accès.</p>
-                    <button id="manageUsersBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg">
-                        Gérer les utilisateurs
-                    </button>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h3 class="font-semibold text-lg mb-4 flex items-center">
-                    <i class="fas fa-history mr-2 text-red-600"></i> Historique des vérifications
-                </h3>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full">
-                        <thead>
-                            <tr>
-                                <th class="px-4 py-2 text-left">Date</th>
-                                <th class="px-4 py-2 text-left">Véhicule</th>
-                                <th class="px-4 py-2 text-left">Rédacteur</th>
-                                <th class="px-4 py-2 text-left">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="historyTable">
-                            <tr class="border-t">
-                                <td class="px-4 py-2">24/04/2023 08:15</td>
-                                <td class="px-4 py-2">VSAV-1</td>
-                                <td class="px-4 py-2">Capitaine Dupont</td>
-                                <td class="px-4 py-2">
-                                    <button class="text-red-600 hover:text-red-800 view-report-btn" data-report-id="1">
-                                        <i class="fas fa-eye"></i> Voir
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-t">
-                                <td class="px-4 py-2">23/04/2023 17:30</td>
-                                <td class="px-4 py-2">FPT-1</td>
-                                <td class="px-4 py-2">Lieutenant Martin</td>
-                                <td class="px-4 py-2">
-                                    <button class="text-red-600 hover:text-red-800 view-report-btn" data-report-id="2">
-                                        <i class="fas fa-eye"></i> Voir
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+      </div>
+      
+      <div class="pt-28"> <!-- Ajout d'un padding-top pour éviter le chevauchement -->
+        <div class="flex justify-between items-center mb-6">
+          <button id="backToSelectionBtn1" class="flex items-center text-red-600 hover:text-red-800">
+            <i class="fas fa-arrow-left mr-2"></i> Retour
+          </button>
+          <h2 id="vehicleTitle" class="text-2xl font-bold">Vérification du matériel</h2>
+          <div></div>
         </div>
-    </main>
-
-    <!-- Pied de page -->
-    <footer class="bg-white border-t mt-8 py-4">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-600 text-sm mb-2 md:mb-0">© 2023 Service Incendie et Secours</p>
-                <div class="flex space-x-4">
-                    <button id="showAdminPageBtn" class="text-red-600 hover:text-red-800 text-sm flex items-center">
-                        <i class="fas fa-cog mr-1"></i> Administration
-                    </button>
-                    <button id="showHelpBtn" class="text-gray-600 hover:text-gray-800 text-sm flex items-center">
-                        <i class="fas fa-question-circle mr-1"></i> Aide
-                    </button>
-                </div>
+        
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold">Matériel à vérifier</h3>
+            <div class="flex space-x-2">
+              <div class="relative">
+                <select id="filterSelect" class="custom-select bg-gray-100 border border-gray-300 text-gray-700 py-1 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-red-500">
+                  <option value="all">Tous</option>
+                  <option value="checked">Vérifié</option>
+                  <option value="unchecked">Non vérifié</option>
+                </select>
+              </div>
+              <div class="relative">
+                <select id="locationFilterSelect" class="custom-select bg-gray-100 border border-gray-300 text-gray-700 py-1 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-red-500">
+                  <option value="all">Tous les emplacements</option>
+                  <!-- Options d'emplacement ajoutées dynamiquement par JS -->
+                </select>
+              </div>
             </div>
+          </div>
+          
+          <div id="equipmentList" class="space-y-3">
+            <!-- Les éléments seront ajoutés dynamiquement -->
+          </div>
         </div>
-    </footer>
-
-    <!-- Modal pour la gestion des véhicules -->
-    <div id="vehiclesModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold">Gestion des véhicules</h3>
-                    <button class="text-gray-500 hover:text-gray-700 close-modal-btn">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                
-                <div>
-                    <button id="addNewVehicleBtn" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm mb-4">
-                        <i class="fas fa-plus mr-1"></i> Ajouter un véhicule
-                    </button>
-                    
-                    <div id="vehiclesList" class="space-y-2">
-                        <!-- Les véhicules seront ajoutés dynamiquement -->
-                    </div>
-                </div>
-                
-                <div id="newVehicleForm" class="border-t pt-4 mt-4 hidden">
-                    <h4 class="font-semibold mb-3">Ajouter un nouveau véhicule</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label class="block text-gray-700 text-sm font-medium mb-1">Identifiant</label>
-                            <input type="text" id="newVehicleId" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="FPT-1">
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 text-sm font-medium mb-1">Type</label>
-                            <select id="newVehicleType" class="custom-select w-full bg-gray-100 border border-gray-300 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-red-500">
-                                <option value="VSAV">VSAV (Ambulance)</option>
-                                <option value="FPT">FPT (Fourgon Pompe Tonne)</option>
-                                <option value="EPA">EPA (Échelle Pivotante)</option>
-                                <option value="VL">VL (Véhicule Léger)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-medium mb-1">Description</label>
-                        <input type="text" id="newVehicleDesc" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="Fourgon Pompe Tonne - Modèle 2020">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-medium mb-1">Photo (URL)</label>
-                        <input type="text" id="newVehicleImage" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="https://example.com/vehicle.jpg">
-                    </div>
-                    <div class="flex justify-end space-x-3">
-                        <button id="cancelAddVehicleBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
-                            Annuler
-                        </button>
-                        <button id="confirmAddVehicleBtn" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg">
-                            Confirmer
-                        </button>
-                    </div>
-                </div>
-            </div>
+        
+        <div id="notesSection" class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <h3 class="font-semibold mb-3">Notes & Observations</h3>
+          <textarea id="inspectionNotes" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" rows="3" placeholder="Ajoutez des observations sur l'état du véhicule..."></textarea>
         </div>
-    </div>
-
-    <!-- Modal pour la gestion du matériel -->
-    <div id="equipmentModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold">Gestion du matériel</h3>
-                    <button class="text-gray-500 hover:text-gray-700 close-modal-btn">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                
-                <div class="mb-6">
-                    <div class="flex justify-between items-center mb-3">
-                        <h4 class="font-semibold">Sélectionnez un véhicule</h4>
-                        <button id="addNewEquipmentBtn" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">
-                            <i class="fas fa-plus mr-1"></i> Ajouter
-                        </button>
-                    </div>
-                    
-                    <select id="vehicleTypeSelect" class="custom-select w-full mb-4 bg-gray-100 border border-gray-300 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-red-500">
-                        <option value="VSAV">VSAV (Ambulance)</option>
-                        <option value="FPT">FPT (Fourgon Pompe Tonne)</option>
-                        <option value="EPA">EPA (Échelle Pivotante)</option>
-                    </select>
-                    
-                    <div id="equipmentManagementList" class="space-y-2">
-                        <!-- Les éléments seront ajoutés dynamiquement -->
-                    </div>
-                </div>
-                
-                <div id="newEquipmentForm" class="border-t pt-4 hidden">
-                    <h4 class="font-semibold mb-3">Ajouter un nouvel équipement</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label class="block text-gray-700 text-sm font-medium mb-1">Nom de l'équipement</label>
-                            <input type="text" id="newEquipmentName" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500">
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 text-sm font-medium mb-1">Quantité attendue</label>
-                            <input type="number" id="newEquipmentQuantity" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" min="1" value="1">
-                        </div>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-medium mb-1">Catégorie</label>
-                        <input type="text" id="newEquipmentCategory" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-medium mb-1">Emplacement</label>
-                        <input type="text" id="newEquipmentLocation" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="Ex: Cabine, Coffre, Dévidoir">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-medium mb-1">Photo (URL)</label>
-                        <input type="text" id="newEquipmentImage" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="https://example.com/image.jpg">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-medium mb-1">Documentation (URL)</label>
-                        <input type="text" id="newEquipmentDoc" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="https://example.com/doc.pdf">
-                    </div>
-                    <div class="flex justify-end space-x-3">
-                        <button id="cancelAddEquipmentBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
-                            Annuler
-                        </button>
-                        <button id="confirmAddEquipmentBtn" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg">
-                            Confirmer
-                        </button>
-                    </div>
-                </div>
-            </div>
+        
+        <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+          <button id="saveBtn" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center">
+            <i class="fas fa-save mr-2"></i> Sauvegarder
+          </button>
+          <button id="completeBtn" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center">
+            <i class="fas fa-check-circle mr-2"></i> Terminer la vérification
+          </button>
         </div>
-    </div>
-
-    <!-- Modal pour la visualisation d'un rapport -->
-    <div id="reportModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold" id="reportTitle">Rapport de vérification</h3>
-                    <button class="text-gray-500 hover:text-gray-700 close-modal-btn">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                
-                <div id="reportContent" class="space-y-4">
-                    <!-- Le contenu sera ajouté dynamiquement -->
-                </div>
-                
-                <div class="mt-6 pt-4 border-t">
-                    <button id="printReportBtn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg mr-3">
-                        <i class="fas fa-print mr-2"></i> Imprimer
-                    </button>
-                    <button id="exportSingleReportBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                        <i class="fas fa-file-export mr-2"></i> Exporter en PDF
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal d'aide -->
-    <div id="helpModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold">Aide et instructions</h3>
-                    <button class="text-gray-500 hover:text-gray-700 close-modal-btn">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                
-                <div class="space-y-4">
-                    <div class="p-4 bg-blue-50 rounded-lg">
-                        <h4 class="font-semibold text-lg mb-2 text-blue-800">Procédure de vérification</h4>
-                        <ol class="list-decimal pl-5 space-y-2 text-gray-700">
-                            <li>Sélectionnez le véhicule à vérifier</li>
-                            <li>Parcourez la liste du matériel et confirmez la présence et l'état de chaque article</li>
-                            <li>Ajoutez des notes si nécessaire</li>
-                            <li>Cliquez sur "Terminer la vérification" une fois tout le matériel vérifié</li>
-                            <li>Exportez ou imprimez le rapport pour archivage</li>
-                        </ol>
-                    </div>
-                    
-                    <div class="p-4 bg-green-50 rounded-lg">
-                        <h4 class="font-semibold text-lg mb-2 text-green-800">Fonctionnalités clés</h4>
-                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
-                            <li>Progression en temps réel de la vérification</li>
-                            <li>Gestion centralisée du matériel affecté à chaque véhicule</li>
-                            <li>Historique complet des vérifications avec recherche</li>
-                            <li>Export des rapports en PDF pour documentation</li>
-                            <li>Interface optimisée pour une utilisation sur le terrain</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="p-4 bg-yellow-50 rounded-lg">
-                        <h4 class="font-semibold text-lg mb-2 text-yellow-800">Contact et support</h4>
-                        <p class="text-gray-700 mb-2">Pour toute question ou problème technique :</p>
-                        <div class="flex items-center text-gray-700">
-                            <i class="fas fa-envelope mr-2"></i> support@verif-vehicules.fr
-                        </div>
-                        <div class="flex items-center text-gray-700 mt-2">
-                            <i class="fas fa-phone mr-2"></i> 01 23 45 67 89
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal pour l'affichage de l'image en plein écran -->
-    <div id="imageViewerModal" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-[100] hidden">
-        <div class="relative w-full h-full flex items-center justify-center">
-            <button class="absolute top-4 right-4 text-white text-3xl z-10 close-image-viewer-btn">
-                <i class="fas fa-times"></i>
+        
+        <div id="exportSection" class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4 hidden">
+          <div class="flex justify-between items-center">
+            <p class="text-blue-800">Vérification terminée avec succès!</p>
+            <button id="exportReportBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-1 px-3 rounded-lg text-sm flex items-center">
+              <i class="fas fa-file-export mr-2"></i> Exporter
             </button>
-            <img id="fullScreenImage" src="" alt="Image du matériel" class="max-w-[90%] max-h-[90%] object-contain">
+          </div>
         </div>
+      </div>
     </div>
 
-    <!-- Modal pour la gestion des utilisateurs -->
-    <div id="usersModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold">Gestion des utilisateurs</h3>
-                    <button class="text-gray-500 hover:text-gray-700 close-modal-btn">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                
-                <div>
-                    <button id="addNewUserBtn" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm mb-4">
-                        <i class="fas fa-plus mr-1"></i> Ajouter un utilisateur
-                    </button>
-                    
-                    <div id="usersList" class="space-y-2">
-                        <!-- Les utilisateurs seront ajoutés dynamiquement -->
-                    </div>
-                </div>
-                
-                <div id="newUserForm" class="border-t pt-4 mt-4 hidden">
-                    <h4 class="font-semibold mb-3">Ajouter un nouvel utilisateur</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label class="block text-gray-700 text-sm font-medium mb-1">Identifiant</label>
-                            <input type="text" id="newUserId" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="john.doe">
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 text-sm font-medium mb-1">Nom complet</label>
-                            <input type="text" id="newUserName" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="John Doe">
-                        </div>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-medium mb-1">Rôle</label>
-                        <select id="newUserRole" class="custom-select w-full bg-gray-100 border border-gray-300 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-red-500">
-                            <option value="Admin">Admin</option>
-                            <option value="User">Utilisateur</option>
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-medium mb-1">Photo (URL)</label>
-                        <input type="text" id="newUserImage" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="https://example.com/user.jpg">
-                    </div>
-                    <div class="flex justify-end space-x-3">
-                        <button id="cancelAddUserBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
-                            Annuler
-                        </button>
-                        <button id="confirmAddUserBtn" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg">
-                            Confirmer
-                        </button>
-                    </div>
-                </div>
+    <!-- Page d'administration -->
+    <div id="adminPage" class="page-transition hidden">
+      <div class="flex justify-between items-center mb-6">
+        <button id="backToSelectionBtn2" class="flex items-center text-red-600 hover:text-red-800">
+          <i class="fas fa-arrow-left mr-2"></i> Retour
+        </button>
+        <h2 class="text-2xl font-bold">Administration</h2>
+        <div></div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="font-semibold text-lg mb-4 flex items-center">
+            <i class="fas fa-truck mr-2 text-red-600"></i> Gestion des véhicules
+          </h3>
+          <p class="text-gray-600 mb-4">Ajoutez, modifiez ou supprimez des véhicules.</p>
+          <button id="manageVehiclesBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg">
+            Gérer les véhicules
+          </button>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="font-semibold text-lg mb-4 flex items-center">
+            <i class="fas fa-tools mr-2 text-red-600"></i> Gestion du matériel
+          </h3>
+          <p class="text-gray-600 mb-4">Ajoutez, modifiez ou supprimez du matériel pour chaque type de véhicule.</p>
+          <button id="manageEquipmentBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg">
+            Gérer le matériel
+          </button>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="font-semibold text-lg mb-4 flex items-center">
+            <i class="fas fa-users-cog mr-2 text-red-600"></i> Gestion des utilisateurs
+          </h3>
+          <p class="text-gray-600 mb-4">Ajoutez ou supprimez des utilisateurs et définissez leurs droits d'accès.</p>
+          <button id="manageUsersBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg">
+            Gérer les utilisateurs
+          </button>
+        </div>
+      </div>
+      
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="font-semibold text-lg mb-4 flex items-center">
+          <i class="fas fa-history mr-2 text-red-600"></i> Historique des vérifications
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full">
+            <thead>
+              <tr>
+                <th class="px-4 py-2 text-left">Date</th>
+                <th class="px-4 py-2 text-left">Véhicule</th>
+                <th class="px-4 py-2 text-left">Rédacteur</th>
+                <th class="px-4 py-2 text-left">Action</th>
+              </tr>
+            </thead>
+            <tbody id="historyTable">
+              <tr class="border-t">
+                <td class="px-4 py-2">24/04/2023 08:15</td>
+                <td class="px-4 py-2">VSAV-1</td>
+                <td class="px-4 py-2">Capitaine Dupont</td>
+                <td class="px-4 py-2">
+                  <button class="text-red-600 hover:text-red-800 view-report-btn" data-report-id="1">
+                    <i class="fas fa-eye"></i> Voir
+                  </button>
+                </td>
+              </tr>
+              <tr class="border-t">
+                <td class="px-4 py-2">23/04/2023 17:30</td>
+                <td class="px-4 py-2">FPT-1</td>
+                <td class="px-4 py-2">Lieutenant Martin</td>
+                <td class="px-4 py-2">
+                  <button class="text-red-600 hover:text-red-800 view-report-btn" data-report-id="2">
+                    <i class="fas fa-eye"></i> Voir
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Pied de page -->
+  <footer class="bg-white border-t mt-8 py-4">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-600 text-sm mb-2 md:mb-0">© 2023 Service Incendie et Secours</p>
+        <div class="flex space-x-4">
+          <button id="showAdminPageBtn" class="text-red-600 hover:text-red-800 text-sm flex items-center">
+            <i class="fas fa-cog mr-1"></i> Administration
+          </button>
+          <button id="showHelpBtn" class="text-gray-600 hover:text-gray-800 text-sm flex items-center">
+            <i class="fas fa-question-circle mr-1"></i> Aide
+          </button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal pour la gestion des véhicules -->
+  <div id="vehiclesModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Gestion des véhicules</h3>
+          <button class="text-gray-500 hover:text-gray-700 close-modal-btn">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <div>
+          <button id="addNewVehicleBtn" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm mb-4">
+            <i class="fas fa-plus mr-1"></i> Ajouter un véhicule
+          </button>
+          
+          <div id="vehiclesList" class="space-y-2">
+            <!-- Les véhicules seront ajoutés dynamiquement -->
+          </div>
+        </div>
+        
+        <div id="newVehicleForm" class="border-t pt-4 mt-4 hidden">
+          <h4 class="font-semibold mb-3">Ajouter un nouveau véhicule</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-gray-700 text-sm font-medium mb-1">Identifiant</label>
+              <input type="text" id="newVehicleId" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="FPT-1">
             </div>
+            <div>
+              <label class="block text-gray-700 text-sm font-medium mb-1">Type</label>
+              <select id="newVehicleType" class="custom-select w-full bg-gray-100 border border-gray-300 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-red-500">
+                <option value="VSAV">VSAV (Ambulance)</option>
+                <option value="FPT">FPT (Fourgon Pompe Tonne)</option>
+                <option value="EPA">EPA (Échelle Pivotante)</option>
+                <option value="VL">VL (Véhicule Léger)</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-medium mb-1">Description</label>
+            <input type="text" id="newVehicleDesc" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="Fourgon Pompe Tonne - Modèle 2020">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-medium mb-1">Photo (URL)</label>
+            <input type="text" id="newVehicleImage" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="https://example.com/vehicle.jpg">
+          </div>
+          <div class="flex justify-end space-x-3">
+            <button id="cancelAddVehicleBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
+              Annuler
+            </button>
+            <button id="confirmAddVehicleBtn" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg">
+              Confirmer
+            </button>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Service Worker Registration -->
-    <script>
-        // Vérifie si le navigateur supporte les service workers
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js').then(function(registration) {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }, function(err) {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
-            });
-        }
-    </script>
+  <!-- Modal pour la gestion du matériel -->
+  <div id="equipmentModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Gestion du matériel</h3>
+          <button class="text-gray-500 hover:text-gray-700 close-modal-btn">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-3">
+            <h4 class="font-semibold">Sélectionnez un véhicule</h4>
+            <button id="addNewEquipmentBtn" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">
+              <i class="fas fa-plus mr-1"></i> Ajouter
+            </button>
+          </div>
+          
+          <select id="vehicleTypeSelect" class="custom-select w-full mb-4 bg-gray-100 border border-gray-300 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-red-500">
+            <option value="VSAV">VSAV (Ambulance)</option>
+            <option value="FPT">FPT (Fourgon Pompe Tonne)</option>
+            <option value="EPA">EPA (Échelle Pivotante)</option>
+          </select>
+          
+          <div id="equipmentManagementList" class="space-y-2">
+            <!-- Les éléments seront ajoutés dynamiquement -->
+          </div>
+        </div>
+        
+        <div id="newEquipmentForm" class="border-t pt-4 hidden">
+          <h4 class="font-semibold mb-3">Ajouter un nouvel équipement</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-gray-700 text-sm font-medium mb-1">Nom de l'équipement</label>
+              <input type="text" id="newEquipmentName" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500">
+            </div>
+            <div>
+              <label class="block text-gray-700 text-sm font-medium mb-1">Quantité attendue</label>
+              <input type="number" id="newEquipmentQuantity" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" min="1" value="1">
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-medium mb-1">Catégorie</label>
+            <input type="text" id="newEquipmentCategory" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-medium mb-1">Emplacement</label>
+            <input type="text" id="newEquipmentLocation" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="Ex: Cabine, Coffre, Dévidoir">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-medium mb-1">Photo (URL)</label>
+            <input type="text" id="newEquipmentImage" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="https://example.com/image.jpg">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-medium mb-1">Documentation (URL)</label>
+            <input type="text" id="newEquipmentDoc" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="https://example.com/doc.pdf">
+          </div>
+          <div class="flex justify-end space-x-3">
+            <button id="cancelAddEquipmentBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
+              Annuler
+            </button>
+            <button id="confirmAddEquipmentBtn" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg">
+              Confirmer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <script type="module" src="/main.js"></script>
+  <!-- Modal pour la visualisation d'un rapport -->
+  <div id="reportModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold" id="reportTitle">Rapport de vérification</h3>
+          <button class="text-gray-500 hover:text-gray-700 close-modal-btn">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <div id="reportContent" class="space-y-4">
+          <!-- Le contenu sera ajouté dynamiquement -->
+        </div>
+        
+        <div class="mt-6 pt-4 border-t">
+          <button id="printReportBtn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg mr-3">
+            <i class="fas fa-print mr-2"></i> Imprimer
+          </button>
+          <button id="exportSingleReportBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+            <i class="fas fa-file-export mr-2"></i> Exporter en PDF
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal d'aide -->
+  <div id="helpModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Aide et instructions</h3>
+          <button class="text-gray-500 hover:text-gray-700 close-modal-btn">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <div class="space-y-4">
+          <div class="p-4 bg-blue-50 rounded-lg">
+            <h4 class="font-semibold text-lg mb-2 text-blue-800">Procédure de vérification</h4>
+            <ol class="list-decimal pl-5 space-y-2 text-gray-700">
+              <li>Sélectionnez le véhicule à vérifier</li>
+              <li>Parcourez la liste du matériel et confirmez la présence et l'état de chaque article</li>
+              <li>Ajoutez des notes si nécessaire</li>
+              <li>Cliquez sur "Terminer la vérification" une fois tout le matériel vérifié</li>
+              <li>Exportez ou imprimez le rapport pour archivage</li>
+            </ol>
+          </div>
+          
+          <div class="p-4 bg-green-50 rounded-lg">
+            <h4 class="font-semibold text-lg mb-2 text-green-800">Fonctionnalités clés</h4>
+            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+              <li>Progression en temps réel de la vérification</li>
+              <li>Gestion centralisée du matériel affecté à chaque véhicule</li>
+              <li>Historique complet des vérifications avec recherche</li>
+              <li>Export des rapports en PDF pour documentation</li>
+              <li>Interface optimisée pour une utilisation sur le terrain</li>
+            </ul>
+          </div>
+          
+          <div class="p-4 bg-yellow-50 rounded-lg">
+            <h4 class="font-semibold text-lg mb-2 text-yellow-800">Contact et support</h4>
+            <p class="text-gray-700 mb-2">Pour toute question ou problème technique :</p>
+            <div class="flex items-center text-gray-700">
+              <i class="fas fa-envelope mr-2"></i> support@verif-vehicules.fr
+            </div>
+            <div class="flex items-center text-gray-700 mt-2">
+              <i class="fas fa-phone mr-2"></i> 01 23 45 67 89
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal pour l'affichage de l'image en plein écran -->
+  <div id="imageViewerModal" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-[100] hidden">
+    <div class="relative w-full h-full flex items-center justify-center">
+      <button class="absolute top-4 right-4 text-white text-3xl z-10 close-image-viewer-btn">
+        <i class="fas fa-times"></i>
+      </button>
+      <img id="fullScreenImage" src="" alt="Image du matériel" class="max-w-[90%] max-h-[90%] object-contain">
+    </div>
+  </div>
+
+  <!-- Modal pour la gestion des utilisateurs -->
+  <div id="usersModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Gestion des utilisateurs</h3>
+          <button class="text-gray-500 hover:text-gray-700 close-modal-btn">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <div>
+          <button id="addNewUserBtn" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm mb-4">
+            <i class="fas fa-plus mr-1"></i> Ajouter un utilisateur
+          </button>
+          
+          <div id="usersList" class="space-y-2">
+            <!-- Les utilisateurs seront ajoutés dynamiquement -->
+          </div>
+        </div>
+        
+        <div id="newUserForm" class="border-t pt-4 mt-4 hidden">
+          <h4 class="font-semibold mb-3">Ajouter un nouvel utilisateur</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-gray-700 text-sm font-medium mb-1">Identifiant</label>
+              <input type="text" id="newUserId" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="john.doe">
+            </div>
+            <div>
+              <label class="block text-gray-700 text-sm font-medium mb-1">Nom complet</label>
+              <input type="text" id="newUserName" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="John Doe">
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-medium mb-1">Rôle</label>
+            <select id="newUserRole" class="custom-select w-full bg-gray-100 border border-gray-300 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-red-500">
+              <option value="Admin">Admin</option>
+              <option value="User">Utilisateur</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-medium mb-1">Photo (URL)</label>
+            <input type="text" id="newUserImage" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="https://example.com/user.jpg">
+          </div>
+          <div class="flex justify-end space-x-3">
+            <button id="cancelAddUserBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
+              Annuler
+            </button>
+            <button id="confirmAddUserBtn" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg">
+              Confirmer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Worker Registration -->
+  <script>
+    // Vérifie si le navigateur supporte les service workers
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js').then(function(registration) {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function(err) {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+  </script>
+
+  <script type="module" src="/main.js"></script>
 </body>
 </html>

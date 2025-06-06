@@ -246,9 +246,11 @@ function renderVehicleCards() {
                         <span class="${statusClass} text-xs font-medium px-2.5 py-0.5 rounded">${statusText}</span>
                     </div>
                     <p class="text-gray-600 mb-1">${vehicle.description}</p>
-                    <div class="flex justify-between text-sm text-gray-500">
-                        <span>Dernière vérif:</span>
-                        <span id="lastCheck${vehicle.id.replace('-', '')}">${lastCheck}</span>
+                    <div class="mt-4">
+                        <div class="flex justify-between text-sm text-gray-500">
+                            <span>Dernière vérif:</span>
+                            <span id="lastCheck${vehicle.id.replace('-', '')}">${lastCheck}</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -299,7 +301,7 @@ function selectVehicle(vehicleId, vehicleName) {
     
     // Mettre à jour la liste d'équipement et les filtres
     populateLocationFilterSelect(); // Populate location filter for the selected vehicle type
-    applyEquipmentFilters(); // Apply initial filters
+    updateEquipmentList(); // Rendre la liste du matériel et appliquer les filtres
     updateProgress();
 }
 
@@ -417,6 +419,8 @@ function updateEquipmentList() {
             showImagePopup(this.dataset.imageUrl);
         });
     });
+
+    applyEquipmentFilters(); // Appliquer les filtres après que les éléments sont dans le DOM
 }
 
 function toggleEquipmentChecked(id) {
@@ -431,7 +435,7 @@ function toggleEquipmentChecked(id) {
     
     updateEquipmentList();
     updateProgress();
-    applyEquipmentFilters(); // Re-apply filters to update visibility
+    // applyEquipmentFilters(); // Already called by updateEquipmentList
 }
 
 function adjustQuantity(id, change) {
